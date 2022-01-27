@@ -85,4 +85,4 @@ var t=arguments[3],e="Expected a function",n=NaN,r="[object Symbol]",i=/^\s+|\s+
 },{}],"QvaY":[function(require,module,exports) {
 "use strict";var e=require("./fetchPhotos"),r=require("./renderPhotos"),t=n(require("lodash.debounce"));function n(e){return e&&e.__esModule?e:{default:e}}const o=document.querySelector("form#search-form"),d=document.querySelector("main"),i=new e.PixabyAPI;let s=1;o.addEventListener("submit",e=>{e.preventDefault(),d.innerHTML="",(0,r.renderPhotos)()}),window.addEventListener("scroll",(0,t.default)(()=>{let e=d.offsetHeight;window.pageYOffset+window.innerHeight>=e&&(s+=1,(0,r.renderPhotos)(s))},200));
 },{"./fetchPhotos":"Dohm","./renderPhotos":"ZVA5","lodash.debounce":"PZFh"}]},{},["QvaY"], null)
-//# sourceMappingURL=/goit-js-hw-11-sandbox/js.4eaf2596.js.map
+//# sourceMappingURL=/goit-js-hw-11/js.4eaf2596.js.map
