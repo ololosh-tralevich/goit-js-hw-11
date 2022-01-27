@@ -15,47 +15,46 @@ const addLightbox = new simpleLightbox('a.gallery__item', {
   showCounter: false,
 });
 
-export function renderPhotos(page) {
+export async function renderPhotos(page) {
   const keyword = textField.value;
 
   pixabyApi.keyword = keyword;
   pixabyApi.page = page;
 
-  pixabyApi
-    .fetchPhotos()
-    .then(({ data } = {}) => {
-      if (data.hits.length === 0) {
-        Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-        return;
-      } else if (data.hits.length > 0) {
-        for (let photo of data.hits) {
-          const photoLikes = photo.likes;
-          const photoViews = photo.views;
-          const photoComments = photo.comments;
-          const photoDownloads = photo.downloads;
-          const photoSmall = photo.webformatURL;
-          const photoLarge = photo.largeImageURL;
-          const photoAlt = photo.tags;
+  try {
+    const { data } = await pixabyApi.fetchPhotos();
 
-          mainSection.insertAdjacentHTML(
-            'beforeend',
-            handlebars({
-              photoLikes,
-              photoViews,
-              photoComments,
-              photoDownloads,
-              photoSmall,
-              photoLarge,
-              photoAlt,
-            }),
-          );
-        }
-      }     
-      addLightbox.refresh();
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  return;
+    if (data.hits.length === 0) {
+      Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+      return;
+    } else if (data.hits.length > 0) {
+      for (let photo of data.hits) {
+        const photoLikes = photo.likes;
+        const photoViews = photo.views;
+        const photoComments = photo.comments;
+        const photoDownloads = photo.downloads;
+        const photoSmall = photo.webformatURL;
+        const photoLarge = photo.largeImageURL;
+        const photoAlt = photo.tags;
+
+        mainSection.insertAdjacentHTML(
+          'beforeend',
+          handlebars({
+            photoLikes,
+            photoViews,
+            photoComments,
+            photoDownloads,
+            photoSmall,
+            photoLarge,
+            photoAlt,
+          }),
+        );
+      }
+    }
+    addLightbox.refresh();
+
+    return;
+  } catch (err) {
+    console.log(err);
+  }
 }
-
